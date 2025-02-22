@@ -1,0 +1,81 @@
+/* Ensure the gallery takes up the full viewport and has padding */
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Basic styling for polaroids */
+.polaroid {
+  position: absolute; /* Positioned absolutely for random placement */
+  width: 220px; /* Width of the polaroid */
+  height: 250px; /* Height of the polaroid */
+  background-color: #fff;
+  border: 1em solid #fff;
+  border-radius: 3px;
+  box-shadow: 0 12.5px 100px -10px rgba(50, 50, 73, 0.3), 0 10px 10px -10px rgba(50, 50, 73, 0.3); /* Shadow for polaroid effect */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Apply film grain overlay using a noise texture */
+.polaroid:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  filter: grayscale(0.5) contrast(1.1) brightness(1); /* Enhance contrast and add slight grayscale effect for vintage look */
+  background-image:url("https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Dissolve_Noise_Texture.png");
+  opacity: 0.05; /* Adjust the opacity to control the grain intensity */
+}
+
+.polaroid.portrait {
+  height: 280px; /* Adjust height for portrait images */
+  border-top: 2em solid #fff; /* Larger top border to simulate the polaroid look */
+  border-bottom: 4em solid #fff; /* Larger bottom border to simulate the polaroid look */
+}
+
+.polaroid.landscape {
+  width: 280px; /* Adjust width for landscape images */
+  border-left: 2em solid #fff; /* Larger top border to simulate the polaroid look */
+  border-right: 4em solid #fff; /* Larger bottom border to simulate the polaroid look */
+}
+
+/* Image styling to fit the polaroid size */
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Hover effects */
+.polaroid:hover {
+  transform: scale(1.05); /* Slight zoom on hover */
+}
+
+.shuffle-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #ff6347;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    z-index: 1000;
+}
