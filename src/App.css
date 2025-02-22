@@ -1,4 +1,3 @@
-/* Ensure the gallery takes up the full viewport and has padding */
 .gallery {
   display: flex;
   flex-wrap: wrap;
@@ -9,15 +8,14 @@
   box-sizing: border-box;
 }
 
-/* Basic styling for polaroids */
 .polaroid {
-  position: absolute; /* Positioned absolutely for random placement */
-  width: 220px; /* Width of the polaroid */
-  height: 250px; /* Height of the polaroid */
+  position: absolute;
+  width: 220px;
+  height: 250px;
   background-color: #fff;
   border: 1em solid #fff;
   border-radius: 3px;
-  box-shadow: 0 12.5px 100px -10px rgba(50, 50, 73, 0.3), 0 10px 10px -10px rgba(50, 50, 73, 0.3); /* Shadow for polaroid effect */
+  box-shadow: 0 12.5px 100px -10px rgba(50, 50, 73, 0.3), 0 10px 10px -10px rgba(50, 50, 73, 0.3);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -28,7 +26,6 @@
   background-position: center;
 }
 
-/* Apply film grain overlay using a noise texture */
 .polaroid:after {
   content: '';
   position: absolute;
@@ -37,33 +34,27 @@
   right: 0;
   bottom: 0;
   pointer-events: none;
-  filter: grayscale(0.5) contrast(1.1) brightness(1); /* Enhance contrast and add slight grayscale effect for vintage look */
+  filter: grayscale(0.5) contrast(1.1) brightness(1); 
   background-image:url("https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Dissolve_Noise_Texture.png");
-  opacity: 0.05; /* Adjust the opacity to control the grain intensity */
+  opacity: 0.05;
 }
 
 .polaroid.portrait {
-  height: 280px; /* Adjust height for portrait images */
-  border-top: 2em solid #fff; /* Larger top border to simulate the polaroid look */
-  border-bottom: 4em solid #fff; /* Larger bottom border to simulate the polaroid look */
+  height: 280px;
+  border-top: 2em solid #fff;
+  border-bottom: 4em solid #fff;
 }
 
 .polaroid.landscape {
-  width: 280px; /* Adjust width for landscape images */
-  border-left: 2em solid #fff; /* Larger top border to simulate the polaroid look */
-  border-right: 4em solid #fff; /* Larger bottom border to simulate the polaroid look */
+  width: 280px;
+  border-left: 2em solid #fff;
+  border-right: 4em solid #fff;
 }
 
-/* Image styling to fit the polaroid size */
 img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-/* Hover effects */
-.polaroid:hover {
-  transform: scale(1.05); /* Slight zoom on hover */
 }
 
 .shuffle-button {

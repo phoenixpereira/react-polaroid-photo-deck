@@ -25,7 +25,7 @@ def convert_and_compress_images(input_dir, output_quality=75, max_size=1000):
                 new_file_path = os.path.join(input_dir, new_filename)
                 img.save(new_file_path, 'webp', quality=output_quality)
                 
-                # Optionally, remove the original file
+                # Remove the original file
                 os.remove(file_path)
 
 if __name__ == "__main__":

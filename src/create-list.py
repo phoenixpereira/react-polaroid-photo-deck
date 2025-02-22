@@ -2,7 +2,7 @@ import os
 import json
 from PIL import Image
 
-# Function to determine orientation based on image size
+# Determine orientation based on image size
 def get_image_orientation(image_path):
     with Image.open(image_path) as img:
         width, height = img.size
