@@ -39,16 +39,16 @@ function App() {
 
     // Randomize x, y positions and rotation to spread them across the screen
     const randomPosition = () => {
-        const minOffsetX = -5;
-        const minOffsetY = -24;
-        const maxOffsetX = 76;
-        const maxOffsetY = 10;
+          const minOffsetX = -5;
+          const minOffsetY = -24;
+          const maxOffsetX = window.innerWidth / 16 - 18;
+          const maxOffsetY = window.innerHeight / 16 - 40;
 
-        const x = Math.random() * (maxOffsetX - minOffsetX) + minOffsetX;
-        const y = Math.random() * (maxOffsetY - minOffsetY) + minOffsetY;
-        const rotate = Math.random() * 30 - 15;
+          const x = Math.random() * (maxOffsetX - minOffsetX) + minOffsetX;
+          const y = Math.random() * (maxOffsetY - minOffsetY) + minOffsetY;
+          const rotate = Math.random() * 30 - 15;
 
-        return { x, y, rotate };
+          return { x, y, rotate };
     };
 
     // Shuffle function to randomise positions and rotations of the photos
