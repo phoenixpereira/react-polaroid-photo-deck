@@ -15,18 +15,27 @@ function App() {
         [key: number]: { x: number; y: number; rotate: number };
     }>({});
     const [isDragging, setIsDragging] = useState<boolean>(false);
+    const [folders, setFolders] = useState<string[]>([]);
+    const [selectedFolder, setSelectedFolder] = useState<string>("");
 
     // Load photos data and set initial positions
     useEffect(() => {
-        const initialPhotos = photosData.slice(0, 50) as Photo[];
-        setPhotos(initialPhotos);
-        const initialPositions: { [key: number]: { x: number; y: number; rotate: number } } =
-            {};
-        initialPhotos.forEach((_, index) => {
-            initialPositions[index] = randomPosition();
-        });
-        setPositions(initialPositions);
+        setFolders([...new Set(photosData.map(photo => photo.folder))]);
+        setSelectedFolder([...new Set(photosData.map(photo => photo.folder))][0]);
     }, []);
+
+    useEffect(() => {
+        if (selectedFolder) {
+            const initialPhotos = photosData.filter(photo => photo.folder === selectedFolder).slice(0, 50) as Photo[];
+            setPhotos(initialPhotos);
+            const initialPositions: { [key: number]: { x: number; y: number; rotate: number } } =
+                {};
+            initialPhotos.forEach((_, index) => {
+                initialPositions[index] = randomPosition();
+            });
+            setPositions(initialPositions);
+        }
+    }, [selectedFolder]);
 
     // Randomize x, y positions and rotation to spread them across the screen
     const randomPosition = () => {
@@ -44,14 +53,17 @@ function App() {
 
     // Shuffle function to randomise positions and rotations of the photos
     const shufflePhotos = () => {
-        const shuffledPhotos = [...photosData].sort(() => 0.5 - Math.random()).slice(0, 50);
-        setPhotos(shuffledPhotos as Photo[]);
-        const shuffledPositions: { [key: number]: { x: number; y: number; rotate: number } } =
-            {};
-        shuffledPhotos.forEach((_, index) => {
-            shuffledPositions[index] = randomPosition();
-        });
-        setPositions(shuffledPositions);
+          const filteredPhotos = photosData.filter((photo) => photo.folder === selectedFolder); // Get only photos from the selected folder
+          const shuffledPhotos = [...filteredPhotos].sort(() => 0.5 - Math.random()).slice(0, 50);
+
+          setPhotos(shuffledPhotos as Photo[]);
+
+          const shuffledPositions: { [key: number]: { x: number; y: number; rotate: number } } = {};
+          shuffledPhotos.forEach((_, index) => {
+                shuffledPositions[index] = randomPosition();
+          });
+
+          setPositions(shuffledPositions);
     };
 
     // Handle click outside of the photo container to reset active index
@@ -81,6 +93,21 @@ function App() {
 
     return (
         <div className="gallery-container">
+            <select
+                value={selectedFolder}
+                onChange={(e) => setSelectedFolder(e.target.value)}
+                className="folder-select"
+            >
+                {folders.map((folder) => (
+                    <option key={folder} value={folder}>
+                        {folder
+                            .split('-')
+                            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                            .join(' ')}
+                    </option>
+                ))}
+            </select>
+
             <button
                 onClick={shufflePhotos}
                 className="shuffle-button"
@@ -139,7 +166,7 @@ function App() {
                             dragElastic={0.2}
                         >
                             <img
-                                src={`/img/${photo.url}`}
+                                src={`/img/${selectedFolder}/${photo.url}`}
                                 alt="Polaroid"
                                 draggable={false}
                             />

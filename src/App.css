@@ -61,8 +61,22 @@ img {
     position: absolute;
     top: 10px;
     left: 10px;
-    background-color: #ff6347;
-    color: white;
+    background-color: #d4d4d4;
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    z-index: 1000;
+}
+
+.folder-select{
+    position: absolute;
+    top: 60px;
+    left: 10px;
+    background-color: #d4d4d4;
+    color: black;
     padding: 10px 20px;
     border: none;
     border-radius: 12px;

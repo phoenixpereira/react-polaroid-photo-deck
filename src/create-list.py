@@ -15,8 +15,15 @@ def get_image_orientation(image_path):
 # Path to the image folder
 image_folder_path = "public/img"
 
-# Get the list of image files in the folder
-image_files = [f for f in os.listdir(image_folder_path) if os.path.isfile(os.path.join(image_folder_path, f))]
+# Get the list of image files in the folder and subfolders
+image_files = []
+subfolders = set()
+for root, dirs, files in os.walk(image_folder_path):
+    for file in files:
+        if os.path.isfile(os.path.join(root, file)):
+            image_files.append(os.path.join(root, file))
+    for dir in dirs:
+        subfolders.add(os.path.relpath(os.path.join(root, dir), image_folder_path))
 
 # Ensure that we have photo entries to process
 if len(image_files) == 0:
@@ -24,16 +31,19 @@ if len(image_files) == 0:
 else:
     photos = []
     # Loop through each image file and determine its orientation
-    for image_file in image_files:
-        image_path = os.path.join(image_folder_path, image_file)
-
+    for image_path in image_files:
         try:
             orientation = get_image_orientation(image_path)
-            photo = {"url": image_file, "orientation": orientation}
+            folder = os.path.relpath(os.path.dirname(image_path), image_folder_path)
+            photo = {
+                "url": os.path.basename(image_path),
+                "orientation": orientation,
+                "folder": folder
+            }
             photos.append(photo)
-            print(f"Processed {image_file} as {orientation}.")
+            print(f"Processed {image_path} as {orientation} in folder {folder}.")
         except Exception as e:
-            print(f"Error processing {image_file}: {e}")
+            print(f"Error processing {image_path}: {e}")
 
     # Save the photo data to the JSON file
     json_file_path = "src/photos.json"
