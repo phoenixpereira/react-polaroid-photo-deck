@@ -26,7 +26,10 @@ function App() {
 
     useEffect(() => {
         if (selectedFolder) {
-            const initialPhotos = photosData.filter(photo => photo.folder === selectedFolder).slice(0, 50) as Photo[];
+            const initialPhotos = photosData
+                .filter(photo => photo.folder === selectedFolder)
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 50) as Photo[];
             setPhotos(initialPhotos);
             const initialPositions: { [key: number]: { x: number; y: number; rotate: number } } =
                 {};
