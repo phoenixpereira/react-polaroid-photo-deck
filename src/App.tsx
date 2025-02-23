@@ -167,7 +167,6 @@ function App() {
                         >
                             <img
                                 src={`/img/${selectedFolder}/${photo.url}`}
-                                alt="Polaroid"
                                 draggable={false}
                             />
                         </motion.div>
