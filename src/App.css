@@ -46,7 +46,7 @@
     right: 0;
     bottom: 0;
     pointer-events: none;
-    background-image: url("https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Dissolve_Noise_Texture.png");
+    background-image: url("/img/noise.webp");
     opacity: 0.05;
     mix-blend-mode: soft-light;
     filter: grayscale(0.4) contrast(1.1) brightness(0.98);

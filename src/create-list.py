@@ -18,8 +18,12 @@ image_folder_path = "public/img"
 # Get the list of image files in the folder and subfolders
 image_files = []
 subfolders = set()
+ignore_files = {"noise.webp"}  # Set of files to ignore
+
 for root, dirs, files in os.walk(image_folder_path):
     for file in files:
+        if file in ignore_files:
+            continue
         if os.path.isfile(os.path.join(root, file)):
             image_files.append(os.path.join(root, file))
     for dir in dirs:
