@@ -134,14 +134,14 @@ export default function App() {
                         setActiveIndex(randomIndex);
                   }, 3000);
 
-                  // Change folder every 120 seconds
+                  // Change folder every 60 seconds
                   folderChangeInterval.current = setInterval(() => {
                         setSelectedFolder((prevFolder) => {
                               const currentIndex = folders.indexOf(prevFolder);
                               const nextIndex = (currentIndex + 1) % folders.length;
                               return folders[nextIndex];
                         });
-                  }, 120000);
+                  }, 60000);
             } else {
                   if (animationInterval.current) {
                         clearInterval(animationInterval.current);
