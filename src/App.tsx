@@ -56,10 +56,10 @@ function App() {
 
       // Randomise x, y positions and rotation to spread them across the screen
       const randomPosition = () => {
-            const minOffsetX = -5;
+            const minOffsetX = -2;
             const minOffsetY = -24;
-            const maxOffsetX = window.innerWidth / 16 - 18;
-            const maxOffsetY = window.innerHeight / 16 - 40;
+            const maxOffsetX = window.innerWidth / 16 - 28;
+            const maxOffsetY = window.innerHeight / 16 - 48;
 
             const x = Math.random() * (maxOffsetX - minOffsetX) + minOffsetX;
             const y = Math.random() * (maxOffsetY - minOffsetY) + minOffsetY;
