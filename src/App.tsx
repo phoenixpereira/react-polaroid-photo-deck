@@ -22,6 +22,7 @@ function App() {
       const isDragging = useRef(false);
       const galleryRef = useRef<HTMLDivElement>(null);
       const animationInterval = useRef<NodeJS.Timeout | null>(null);
+      const folderChangeInterval = useRef<NodeJS.Timeout | null>(null);
 
       // Load photos data and set initial positions
       useEffect(() => {
@@ -40,7 +41,7 @@ function App() {
                         orientation: photo.orientation as "portrait" | "landscape"
                   }))
                   .sort(() => 0.5 - Math.random())
-                  .slice(0, numImages); // Use numImages state
+                  .slice(0, numImages);
       }, [filteredPhotos, numImages]);
 
       useEffect(() => {
@@ -58,10 +59,10 @@ function App() {
 
       // Randomise x, y positions and rotation to spread them across the screen
       const randomPosition = () => {
-            const minOffsetX = -2;
-            const minOffsetY = -24;
-            const maxOffsetX = window.innerWidth / 16 - 28;
-            const maxOffsetY = window.innerHeight / 16 - 48;
+            const minOffsetX = 8;
+            const minOffsetY = -18;
+            const maxOffsetX = window.innerWidth / 16 - 35;
+            const maxOffsetY = window.innerHeight / 16 - 52;
 
             const x = Math.random() * (maxOffsetX - minOffsetX) + minOffsetX;
             const y = Math.random() * (maxOffsetY - minOffsetY) + minOffsetY;
@@ -69,19 +70,6 @@ function App() {
 
             return { x, y, rotate };
       };
-    
-    const randomPositionAnimation = () => {
-          const minOffsetX = 8;
-          const minOffsetY = -18;
-          const maxOffsetX = window.innerWidth / 16 - 35;
-          const maxOffsetY = window.innerHeight / 16 - 52;
-
-          const x = Math.random() * (maxOffsetX - minOffsetX) + minOffsetX;
-          const y = Math.random() * (maxOffsetY - minOffsetY) + minOffsetY;
-          const rotate = Math.random() * 30 - 15;
-
-          return { x, y, rotate };
-    };
 
       // Shuffle function to randomise positions and rotations of the photos
       const shufflePhotos = () => {
@@ -129,30 +117,36 @@ function App() {
             isDragging.current = false;
       };
 
-      // Handle animate toggle
+    // Handle animate toggle
     const handleAnimateToggle = () => {
-        setAnimateToggle((prev) => !prev);
-        if (!animateToggle) {
-            // Move all images close to the centre of the screen
-            const newPositions: { [key: number]: { x: number; y: number; rotate: number } } = {};
-            Object.keys(photos).forEach((key) => {
-                newPositions[Number(key)] = randomPositionAnimation();
-            });
+      setAnimateToggle((prev) => !prev);
+      if (!animateToggle) {
+        // Change selected photo every 3 seconds
+        animationInterval.current = setInterval(() => {
+            let randomIndex;
+            do {
+              randomIndex = Math.floor(Math.random() * photos.length);
+            } while (randomIndex === activeIndex);
+            setActiveIndex(randomIndex);
+        }, 3000);
 
-            // Start the animation loop
-            animationInterval.current = setInterval(() => {
-                let randomIndex;
-                do {
-                    randomIndex = Math.floor(Math.random() * photos.length);
-                } while (randomIndex === activeIndex);
-                setActiveIndex(randomIndex);
-            }, 3000); // Update every 3 seconds
-            setPositions(newPositions);
-        } else {
-            if (animationInterval.current) {
-                clearInterval(animationInterval.current);
-            }
+        // Change folder every 120 seconds
+        folderChangeInterval.current = setInterval(() => {
+            setSelectedFolder((prevFolder) => {
+              const currentIndex = folders.indexOf(prevFolder);
+              const nextIndex = (currentIndex + 1) % folders.length;
+              return folders[nextIndex];
+            });
+        }, 120000);
+
+      } else {
+        if (animationInterval.current) {
+            clearInterval(animationInterval.current);
         }
+        if (folderChangeInterval.current) {
+            clearInterval(folderChangeInterval.current);
+        }
+      }
     };
 
       return (
