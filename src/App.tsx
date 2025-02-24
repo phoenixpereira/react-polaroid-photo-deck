@@ -200,7 +200,7 @@ function App() {
                                           activeIndex === index
                                                 ? {
                                                         zIndex: 100,
-                                                        scale: 1.5,
+                                                        scale: 1.2,
                                                         rotate: positions[index]?.rotate,
                                                         opacity: 1,
                                                         transition: {
