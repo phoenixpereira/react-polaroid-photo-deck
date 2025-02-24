@@ -18,8 +18,10 @@ function App() {
       const [folders, setFolders] = useState<string[]>([]);
       const [selectedFolder, setSelectedFolder] = useState<string>("");
       const [numImages, setNumImages] = useState<number>(10);
+      const [animateToggle, setAnimateToggle] = useState<boolean>(false);
       const isDragging = useRef(false);
       const galleryRef = useRef<HTMLDivElement>(null);
+      const animationInterval = useRef<NodeJS.Timeout | null>(null);
 
       // Load photos data and set initial positions
       useEffect(() => {
@@ -67,6 +69,19 @@ function App() {
 
             return { x, y, rotate };
       };
+    
+    const randomPositionAnimation = () => {
+          const minOffsetX = 8;
+          const minOffsetY = -18;
+          const maxOffsetX = window.innerWidth / 16 - 35;
+          const maxOffsetY = window.innerHeight / 16 - 52;
+
+          const x = Math.random() * (maxOffsetX - minOffsetX) + minOffsetX;
+          const y = Math.random() * (maxOffsetY - minOffsetY) + minOffsetY;
+          const rotate = Math.random() * 30 - 15;
+
+          return { x, y, rotate };
+    };
 
       // Shuffle function to randomise positions and rotations of the photos
       const shufflePhotos = () => {
@@ -114,6 +129,32 @@ function App() {
             isDragging.current = false;
       };
 
+      // Handle animate toggle
+    const handleAnimateToggle = () => {
+        setAnimateToggle((prev) => !prev);
+        if (!animateToggle) {
+            // Move all images close to the centre of the screen
+            const newPositions: { [key: number]: { x: number; y: number; rotate: number } } = {};
+            Object.keys(photos).forEach((key) => {
+                newPositions[Number(key)] = randomPositionAnimation();
+            });
+
+            // Start the animation loop
+            animationInterval.current = setInterval(() => {
+                let randomIndex;
+                do {
+                    randomIndex = Math.floor(Math.random() * photos.length);
+                } while (randomIndex === activeIndex);
+                setActiveIndex(randomIndex);
+            }, 3000); // Update every 3 seconds
+            setPositions(newPositions);
+        } else {
+            if (animationInterval.current) {
+                clearInterval(animationInterval.current);
+            }
+        }
+    };
+
       return (
             <div className="gallery-container">
                   <select
@@ -150,39 +191,45 @@ function App() {
                         />
                   </svg>
 
-                        <select
-                              value={numImages}
-                              onChange={(e) => setNumImages(Number(e.target.value))}
-                              className="num-images-select"
-                        >
-                              {[10, 20, 30, 40, 50].map((num) => (
-                                    <option
-                                          key={num}
-                                          value={num}
-                                    >
-                                          {num} Images
-                                    </option>
-                              ))}
-                        </select>
-                        <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="16"
-                              height="16"
-                              fill="currentColor"
-                              className="bi-chevron-down-images"
-                              viewBox="0 0 16 16"
-                        >
-                              <path
-                                    fillRule="evenodd"
-                                    d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
-                              />
-                        </svg>
-
+                  <select
+                        value={numImages}
+                        onChange={(e) => setNumImages(Number(e.target.value))}
+                        className="num-images-select"
+                  >
+                        {[10, 20, 30, 40, 50].map((num) => (
+                              <option
+                                    key={num}
+                                    value={num}
+                              >
+                                    {num} Images
+                              </option>
+                        ))}
+                  </select>
+                  <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        className="bi-chevron-down-images"
+                        viewBox="0 0 16 16"
+                  >
+                        <path
+                              fillRule="evenodd"
+                              d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
+                        />
+              </svg>
                   <button
                         onClick={shufflePhotos}
                         className="shuffle-button"
                   >
                         Shuffle
+                  </button>
+
+                  <button
+                        onClick={handleAnimateToggle}
+                        className="animate-toggle-button"
+                  >
+                        {animateToggle ? "Stop Animation" : "Start Animation"}
                   </button>
 
                   <div
@@ -236,7 +283,6 @@ function App() {
                                                         }
                                                   }
                               };
-
 
                               return (
                                     <motion.div
