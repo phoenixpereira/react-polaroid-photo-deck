@@ -16,6 +16,7 @@ function App() {
     }>({});
     const [folders, setFolders] = useState<string[]>([]);
     const [selectedFolder, setSelectedFolder] = useState<string>("");
+    const [numImages, setNumImages] = useState<number>(10);
     const isDragging = useRef(false);
     const galleryRef = useRef<HTMLDivElement>(null);
 
@@ -33,8 +34,8 @@ function App() {
         return [...filteredPhotos].map(photo => ({
             ...photo,
             orientation: photo.orientation as "portrait" | "landscape"
-        })).sort(() => 0.5 - Math.random()).slice(0, 50);
-    }, [filteredPhotos]);
+        })).sort(() => 0.5 - Math.random()).slice(0, numImages); // Use numImages state
+    }, [filteredPhotos, numImages]);
 
     useEffect(() => {
         if (selectedFolder) {
@@ -110,6 +111,18 @@ function App() {
                             .split('-')
                             .map(word => word.charAt(0).toUpperCase() + word.slice(1))
                             .join(' ')}
+                    </option>
+                ))}
+            </select>
+
+            <select
+                value={numImages}
+                onChange={(e) => setNumImages(Number(e.target.value))}
+                className="num-images-select"
+            >
+                {[10, 20, 30, 40, 50].map((num) => (
+                    <option key={num} value={num}>
+                        {num} Images
                     </option>
                 ))}
             </select>
