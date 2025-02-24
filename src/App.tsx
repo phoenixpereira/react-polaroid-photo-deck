@@ -202,14 +202,41 @@ function App() {
                                                         zIndex: 100,
                                                         scale: 1.5,
                                                         rotate: positions[index]?.rotate,
-                                                        opacity: 1
+                                                        opacity: 1,
+                                                        transition: {
+                                                              scale: {
+                                                                    type: "spring",
+                                                                    stiffness: 100,
+                                                                    damping: 25
+                                                              },
+                                                              opacity: { duration: 0.4 },
+                                                              rotate: {
+                                                                    type: "spring",
+                                                                    stiffness: 100,
+                                                                    damping: 25
+                                                              }
+                                                        }
                                                   }
                                                 : {
                                                         opacity: 1,
                                                         scale: 0.5,
-                                                        rotate: positions[index]?.rotate
+                                                        rotate: positions[index]?.rotate,
+                                                        transition: {
+                                                              scale: {
+                                                                    type: "spring",
+                                                                    stiffness: 100,
+                                                                    damping: 25
+                                                              },
+                                                              opacity: { duration: 0.4 },
+                                                              rotate: {
+                                                                    type: "spring",
+                                                                    stiffness: 100,
+                                                                    damping: 25
+                                                              }
+                                                        }
                                                   }
                               };
+
 
                               return (
                                     <motion.div
