@@ -136,21 +136,47 @@ function App() {
                               </option>
                         ))}
                   </select>
-
-                  <select
-                        value={numImages}
-                        onChange={(e) => setNumImages(Number(e.target.value))}
-                        className="num-images-select"
+                  <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        className="bi-chevron-down-folder"
+                        viewBox="0 0 16 16"
                   >
-                        {[10, 20, 30, 40, 50].map((num) => (
-                              <option
-                                    key={num}
-                                    value={num}
-                              >
-                                    {num} Images
-                              </option>
-                        ))}
-                  </select>
+                        <path
+                              fillRule="evenodd"
+                              d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
+                        />
+                  </svg>
+
+                        <select
+                              value={numImages}
+                              onChange={(e) => setNumImages(Number(e.target.value))}
+                              className="num-images-select"
+                        >
+                              {[10, 20, 30, 40, 50].map((num) => (
+                                    <option
+                                          key={num}
+                                          value={num}
+                                    >
+                                          {num} Images
+                                    </option>
+                              ))}
+                        </select>
+                        <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="16"
+                              height="16"
+                              fill="currentColor"
+                              className="bi-chevron-down-images"
+                              viewBox="0 0 16 16"
+                        >
+                              <path
+                                    fillRule="evenodd"
+                                    d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
+                              />
+                        </svg>
 
                   <button
                         onClick={shufflePhotos}
@@ -182,7 +208,7 @@ function App() {
                                                         opacity: 1,
                                                         scale: 0.5,
                                                         rotate: positions[index]?.rotate
-                                                  },
+                                                  }
                               };
 
                               return (
