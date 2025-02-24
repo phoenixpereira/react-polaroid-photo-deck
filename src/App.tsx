@@ -93,10 +93,14 @@ export default function App() {
             setPositions(shuffledPositions);
       };
 
-      // Handle click outside of the photo container to reset active index
+      // Handle click outside of the photo container to stop animation
       const handleOutsideClick = useCallback((event: MouseEvent) => {
-            if (galleryRef.current && !galleryRef.current.contains(event.target as Node)) {
+            if (
+                  !galleryRef.current?.contains(event.target as Node) &&
+                  !document.querySelector(".animate-toggle-button")?.contains(event.target as Node)
+            ) {
                   setActiveIndex(null);
+                  stopAnimation();
             }
       }, []);
 
@@ -117,37 +121,47 @@ export default function App() {
             isDragging.current = false;
       };
 
-    // Handle animate toggle
-    const handleAnimateToggle = () => {
-      setAnimateToggle((prev) => !prev);
-      if (!animateToggle) {
-        // Change selected photo every 3 seconds
-        animationInterval.current = setInterval(() => {
-            let randomIndex;
-            do {
-              randomIndex = Math.floor(Math.random() * photos.length);
-            } while (randomIndex === activeIndex);
-            setActiveIndex(randomIndex);
-        }, 3000);
+      // Handle animate toggle
+      const handleAnimateToggle = () => {
+            setAnimateToggle((prev) => !prev);
+            if (!animateToggle) {
+                  // Change selected photo every 3 seconds
+                  animationInterval.current = setInterval(() => {
+                        let randomIndex;
+                        do {
+                              randomIndex = Math.floor(Math.random() * photos.length);
+                        } while (randomIndex === activeIndex);
+                        setActiveIndex(randomIndex);
+                  }, 3000);
 
-        // Change folder every 120 seconds
-        folderChangeInterval.current = setInterval(() => {
-            setSelectedFolder((prevFolder) => {
-              const currentIndex = folders.indexOf(prevFolder);
-              const nextIndex = (currentIndex + 1) % folders.length;
-              return folders[nextIndex];
-            });
-        }, 120000);
+                  // Change folder every 120 seconds
+                  folderChangeInterval.current = setInterval(() => {
+                        setSelectedFolder((prevFolder) => {
+                              const currentIndex = folders.indexOf(prevFolder);
+                              const nextIndex = (currentIndex + 1) % folders.length;
+                              return folders[nextIndex];
+                        });
+                  }, 120000);
+            } else {
+                  if (animationInterval.current) {
+                        clearInterval(animationInterval.current);
+                  }
+                  if (folderChangeInterval.current) {
+                        clearInterval(folderChangeInterval.current);
+                  }
+            }
+      };
 
-      } else {
-        if (animationInterval.current) {
-            clearInterval(animationInterval.current);
-        }
-        if (folderChangeInterval.current) {
-            clearInterval(folderChangeInterval.current);
-        }
-      }
-    };
+      // Stop animation
+      const stopAnimation = () => {
+            setAnimateToggle(false);
+            if (animationInterval.current) {
+                  clearInterval(animationInterval.current);
+            }
+            if (folderChangeInterval.current) {
+                  clearInterval(folderChangeInterval.current);
+            }
+      };
 
       return (
             <div>
@@ -211,7 +225,7 @@ export default function App() {
                               fillRule="evenodd"
                               d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
                         />
-              </svg>
+                  </svg>
                   <button
                         onClick={shufflePhotos}
                         className="shuffle-button"
@@ -293,6 +307,7 @@ export default function App() {
                                                       setActiveIndex(
                                                             activeIndex === index ? null : index
                                                       );
+                                                      stopAnimation();
                                                 }
                                           }}
                                           onDragStart={handleDragStart}
