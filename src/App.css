@@ -24,6 +24,7 @@
     background-size: cover;
     background-position: center;
     filter: saturate(0.9) contrast(0.9) brightness(1.2) sepia(0.2);
+    will-change: transform;
 }
 
 .polaroid:before {
