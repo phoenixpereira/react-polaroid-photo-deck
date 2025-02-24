@@ -9,7 +9,7 @@ interface Photo {
       folder: string;
 }
 
-function App() {
+export default function App() {
       const [photos, setPhotos] = useState<Photo[]>([]);
       const [activeIndex, setActiveIndex] = useState<number | null>(null);
       const [positions, setPositions] = useState<{
@@ -150,7 +150,7 @@ function App() {
     };
 
       return (
-            <div className="gallery-container">
+            <div>
                   <select
                         value={selectedFolder}
                         onChange={(e) => setSelectedFolder(e.target.value)}
@@ -317,5 +317,3 @@ function App() {
             </div>
       );
 }
-
-export default App;
