@@ -10,8 +10,6 @@
 
 .polaroid {
     position: absolute;
-    width: 13.75rem;
-    height: 15.625rem;
     background-color: #fff;
     border: 1em solid #fff;
     box-shadow: 0 0.78125rem 6.25rem -0.625rem rgba(50, 50, 73, 0.3), 
@@ -53,15 +51,17 @@
 }
 
 .polaroid.portrait {
-    height: 17.5rem;
+    width: 18em;
+    height: 24em;
     border-top: 2em solid #fff;
-    border-bottom: 4em solid #fff;
+    border-bottom: 5.5em solid #fff;
 }
 
 .polaroid.landscape {
-    width: 17.5rem;
+    width: 24em;
+    height: 18em;
     border-left: 2em solid #fff;
-    border-right: 4em solid #fff;
+    border-right: 5.5em solid #fff;
 }
 
 img {
