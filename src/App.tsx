@@ -48,7 +48,7 @@ function App() {
         }
     }, [selectedFolder, shuffledPhotos]);
 
-    // Randomize x, y positions and rotation to spread them across the screen
+    // Randomise x, y positions and rotation to spread them across the screen
     const randomPosition = () => {
         const minOffsetX = -5;
         const minOffsetY = -24;
@@ -64,10 +64,19 @@ function App() {
 
     // Shuffle function to randomise positions and rotations of the photos
     const shufflePhotos = () => {
-        setPhotos(shuffledPhotos);
+        const filteredPhotos = photosData.filter(photo => photo.folder === selectedFolder);
+        const allShuffledPhotos = [...filteredPhotos]
+            .map(photo => ({
+                ...photo,
+                orientation: photo.orientation as "portrait" | "landscape"
+            }))
+            .sort(() => 0.5 - Math.random())
+            .slice(0, numImages);
+
+        setPhotos(allShuffledPhotos);
 
         const shuffledPositions: { [key: number]: { x: number; y: number; rotate: number } } = {};
-        shuffledPhotos.forEach((_, index) => {
+        allShuffledPhotos.forEach((_, index) => {
             shuffledPositions[index] = randomPosition();
         });
 
