@@ -1,6 +1,5 @@
-# Polaroid Style Photo Deck
-
-A beautiful polaroid style photo deck. Inspired by https://github.com/ikefakis/react-polaroid-photo-deck.
+# React Polaroid Photo Deck
+A React-based polaroid-style photo deck that allows you to showcase your images in a visually appealing way. This project features drag-and-drop functionality for organising your image folders. It also has smooth, automatic animations, making viewing photos interactive and dynamic.
 
 ## Getting Started
 
